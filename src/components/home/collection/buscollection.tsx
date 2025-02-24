@@ -1,36 +1,45 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native"; // Thêm useNavigation
+import { router } from "expo-router";
 
 // Dữ liệu các tin tức (có thể được lấy từ API hoặc danh sách static)
-const newsItems = [
+const stationsItems = [
     {
         id: "1",
-        title: "Hướng dẫn tạo yêu cầu bồi thường bảo hiểm",
-        image: require("@/assets/demo.jpg"), // Đường dẫn ảnh import
+        title: "Bến xe miền đông mới",
+        image: require("@/assets/station/miendong.jpg"),
+        route: "/miendong", 
     },
     {
         id: "2",
-        title: "Hướng dẫn mua vé xe trực tuyến",
-        image: require("@/assets/demo.jpg"),
+        title: "Bến xe miền tây",
+        image: require("@/assets/station/mientay.jpg"),
+        route: "/mientay", 
     },
     {
         id: "3",
-        title: "Vexere ký kết hợp tác với các hãng xe lớn",
-        image: require("@/assets/demo.jpg"),
+        title: "Bến xe thành phố đà lạt",
+        image: require("@/assets/station/dalat.jpg"),
+        route: "/dalat",
     },
     {
         id: "4",
-        title: "Vexere triển khai dịch vụ đặt vé qua app",
-        image: require("@/assets/demo.jpg"),
+        title: "Bến xe miền đông cũ ",
+        image: require("@/assets/station/miendongcu.jpg"),
+        route: "/dongcu",
     },
-    {
-        id: "5",
-        title: "Tin tức và thông báo từ Vexere",
-        image: require("@/assets/demo.jpg"),
-    },
+   
 ];
 
 const EndowCollection = () => {
+   
+
+     // Điều hướng theo route của từng item
+        const handlePress = (item: any) => {
+            router.navigate(item.route); // Điều hướng dựa vào route được định sẵn
+        };
+
     return (
         <View style={styles.container}>
             {/* Tiêu đề Tin tức */}
@@ -43,15 +52,15 @@ const EndowCollection = () => {
 
             {/* Danh sách Tin tức */}
             <FlatList
-                data={newsItems}
+                data={stationsItems}
                 keyExtractor={(item) => item.id}
                 showsHorizontalScrollIndicator={false}
                 horizontal
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
+                    <TouchableOpacity onPress={() => handlePress(item)} style={styles.item}>
                         <Image source={item.image} style={styles.image} />
                         <Text style={styles.title}>{item.title}</Text>
-                    </View>
+                    </TouchableOpacity>
                 )}
             />
         </View>

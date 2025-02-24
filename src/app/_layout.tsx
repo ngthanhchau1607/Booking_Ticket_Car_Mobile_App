@@ -30,9 +30,17 @@ const RootLayout = () => {
 
                         <Stack.Screen name="(account)/info" options={{ headerShown: false }} />
                         <Stack.Screen name="(account)/changepass" options={{ headerShown: false }} />
+
+
                         <Stack.Screen name="(search)/search" options={{ headerShown: false }} />
                         <Stack.Screen name="(search)/searchto" options={{ headerShown: false }} />
-                        <Stack.Screen name="(search)/date" options={{ headerShown: false }} />
+                        <Stack.Screen name="(search)/date" options={{ headerShown: false }} /> 
+
+
+                        <Stack.Screen name="(station)/miendong" options={{ headerShown: false }} /> 
+                        <Stack.Screen name="(station)/mientay" options={{ headerShown: false }} /> 
+                        <Stack.Screen name="(station)/dalat" options={{ headerShown: false }} /> 
+                        <Stack.Screen name="(station)/dongcu" options={{ headerShown: false }} /> 
 
 
                     </Stack>

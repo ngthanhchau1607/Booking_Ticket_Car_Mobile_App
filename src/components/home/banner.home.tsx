@@ -8,11 +8,11 @@ import { useRouter } from "expo-router";
 import { useLocation } from "@/context/search.context";
 
 const BannerHome = () => {
-    const { departure, destination } = useLocation();
+    const { departure, destination ,date} = useLocation();
     const router = useRouter();
 
     useEffect(() => {
-    }, [departure, destination]);
+    }, [departure, destination,date]);
 
 
     const handleNavigateToSearch = (type: string) => {
@@ -82,7 +82,7 @@ const BannerHome = () => {
                 <TouchableOpacity style={styles.inputRow} onPress={handleNavigateToDate}>
                     <Ionicons name="calendar-outline" size={24} color="#1e88e5" />
                     <View style={styles.inputContainer}>
-                        <Text style={styles.inputText}>Ngày đi</Text>
+                        <Text style={styles.inputText}>{date}</Text>
                     </View>
                 </TouchableOpacity>
 
