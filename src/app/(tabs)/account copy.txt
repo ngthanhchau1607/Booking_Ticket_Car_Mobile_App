@@ -1,0 +1,73 @@
+import ShareInput from "@/components/input/share.input";
+import { useCurrentApp } from "@/context/api.context";
+import { useState } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+
+const AccountPage = () => {
+    const { theme, appState } = useCurrentApp();
+    const [userName, setUserName] = useState<string>(appState?.user.name || "");
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.profileContainer}>
+                {/* Thêm ảnh từ URL */}
+                <Image
+                    // source={{ uri: appState?.user.avatar }}
+                    source={{ uri: "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/469799460_1980961335743933_7427354179227411978_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=olKBcH_wAZ8Q7kNvgEz-jC5&_nc_oc=AdhlHPfYSdo15LVXgoRZk6tf4cWcWpCC4DFCi7it3QGcQplTU3u9vAatu16yfiQKOZfpWXp4rGQ52hHSPkKGlrHi&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=AVZVCIwt4Pvl_H9ADHnz7PO&oh=00_AYDbR1pjPfVVafDvzFE_Hle1w7awKpCm8sZ0VczDIElFIw&oe=67BB5992" }}
+                    style={styles.avatar}
+                />
+                <Text style={styles.username}>{appState?.user.name}</Text>
+            </View>
+            <View style={styles.inputContainer}>
+                <ShareInput
+                    title="Họ tên"
+                    value={userName}
+                    setValue={setUserName}
+                />
+                <ShareInput
+                    title="Email"
+                    keyboardType="email-address"
+                    value={appState?.user.email}
+                    setValue={setUserName}
+                />
+                <ShareInput
+                    title="Số điện thoại"
+                    value={appState?.user.numberPhone}
+                    setValue={setUserName}
+                />
+            </View>
+        </View>
+    );
+};
+
+export default AccountPage;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingHorizontal: 20,
+        paddingTop: 40,
+        backgroundColor: "#f9f9f9", // Màu nền của trang
+    },
+    profileContainer: {
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 20,
+    },
+    avatar: {
+        height: 150,
+        width: 150,
+        borderRadius: 75, // Làm tròn ảnh để thành hình tròn
+        borderWidth: 2,
+        borderColor: "#ccc", // Đường viền cho ảnh
+    },
+    username: {
+        fontSize: 20,
+        fontWeight: "600",
+        color: "#333",
+    },
+    inputContainer: {
+        marginTop: 20,
+        gap: 20,
+    },
+});
