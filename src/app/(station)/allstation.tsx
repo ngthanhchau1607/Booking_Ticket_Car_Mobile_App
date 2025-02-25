@@ -1,61 +1,54 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native"; // Thêm useNavigation
-import { router } from "expo-router";
+import { router } from "expo-router"; // Sử dụng router để điều hướng
 
-// Dữ liệu các tin tức (có thể được lấy từ API hoặc danh sách static)
+// Dữ liệu các bến xe (có thể được lấy từ API hoặc danh sách static)
 const stationsItems = [
     {
         id: "1",
-        title: "Bến xe miền đông mới",
+        title: "Bến xe miền Đông mới",
         image: require("@/assets/station/miendong.jpg"),
         route: "/miendong",
     },
     {
         id: "2",
-        title: "Bến xe miền tây",
+        title: "Bến xe miền Tây",
         image: require("@/assets/station/mientay.jpg"),
         route: "/mientay",
     },
     {
         id: "3",
-        title: "Bến xe thành phố đà lạt",
+        title: "Bến xe thành phố Đà Lạt",
         image: require("@/assets/station/dalat.jpg"),
         route: "/dalat",
     },
     {
         id: "4",
-        title: "Bến xe miền đông cũ ",
+        title: "Bến xe Miền Đông cũ",
         image: require("@/assets/station/miendongcu.jpg"),
         route: "/dongcu",
     },
-
 ];
 
-const EndowCollection = () => {
-
-
+const AllStation = () => {
     // Điều hướng theo route của từng item
     const handlePress = (item: any) => {
         router.navigate(item.route); // Điều hướng dựa vào route được định sẵn
     };
 
     return (
-        <View style={styles.container}>
-            {/* Tiêu đề Tin tức */}
+        <View style={{ flex: 1, backgroundColor: "#f5f7fa" }}>
+            {/* Header */}
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Bến xe</Text>
-                <TouchableOpacity onPress={() => router.navigate("/allstation")}>
-                    <Text style={styles.seeAll}>Xem tất cả</Text>
-                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Tất cả Bến xe</Text>
             </View>
 
-            {/* Danh sách Tin tức */}
+            {/* Danh sách Bến xe */}
             <FlatList
                 data={stationsItems}
                 keyExtractor={(item) => item.id}
-                showsHorizontalScrollIndicator={false}
-                horizontal
+                showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handlePress(item)} style={styles.item}>
                         <Image source={item.image} style={styles.image} />
@@ -68,46 +61,37 @@ const EndowCollection = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        backgroundColor: "#f5f7fa",
-    },
     header: {
+        backgroundColor: "white",
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 12,
+        paddingHorizontal: 20,
+        paddingBottom: 16,
+        marginTop: 10,
     },
     headerTitle: {
         fontSize: 18,
         fontWeight: "bold",
     },
-    seeAll: {
-        fontSize: 14,
-        color: "#1976d2", // Màu xanh cho nút "Xem tất cả"
-    },
     item: {
-        width: 250, // Chiều rộng của mỗi item
-        marginRight: 10,
         backgroundColor: "#fff",
         borderRadius: 10,
+        paddingHorizontal: 20,
         overflow: "hidden",
-        padding: 10,
-        alignItems: "center", // Canh giữa ảnh và title
+        marginBottom: 12,
     },
     image: {
-        width: "100%", // Ảnh chiếm hết chiều rộng của item
-        height: 120,
-        borderRadius: 10,
+        width: "100%",
+        height: 200,
+        borderRadius: 8,
     },
     title: {
-        marginTop: 8,
         fontSize: 14,
         fontWeight: "bold",
+        color: "#333",
+        padding: 10,
         textAlign: "left",
-        width: "100%",
     },
 });
 
-export default EndowCollection;
+export default AllStation;

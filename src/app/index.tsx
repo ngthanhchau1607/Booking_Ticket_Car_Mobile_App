@@ -9,45 +9,45 @@ import { useCurrentApp } from "@/context/api.context";
 
 
 const AppRoot = () => {
-    const { appState, setAppState } = useCurrentApp();
-    useEffect(() => {
-        async function prepare() {
-            try {
-                const token = await AsyncStorage.getItem("token");
+    // const { appState, setAppState } = useCurrentApp();
+    // useEffect(() => {
+    //     async function prepare() {
+    //         try {
+    //             const token = await AsyncStorage.getItem("token");
 
-                if (!token) {
-                    // Nếu không có token, chuyển hướng đến trang welcome
-                    router.replace("/(auth)/welcome");
-                    return;
-                }
+    //             if (!token) {
+    //                 // Nếu không có token, chuyển hướng đến trang welcome
+    //                 router.replace("/(auth)/welcome");
+    //                 return;
+    //             }
 
-                // Nếu có token, thực hiện fetch dữ liệu người dùng
-                const res = await getAccountAPi();
+    //             // Nếu có token, thực hiện fetch dữ liệu người dùng
+    //             const res = await getAccountAPi();
 
-                if (res.data) {
-                    setAppState({
-                        user: res.data,
-                        token: token
-                    });
-                    router.replace("/(tabs)"); // Điều hướng đến trang tabs
-                } else {
-                    // Nếu không có dữ liệu từ API, chuyển hướng về trang welcome
-                    router.replace("/(auth)/welcome");
-                }
+    //             if (res.data) {
+    //                 setAppState({
+    //                     user: res.data,
+    //                     token: token
+    //                 });
+    //                 router.replace("/(tabs)"); // Điều hướng đến trang tabs
+    //             } else {
+    //                 // Nếu không có dữ liệu từ API, chuyển hướng về trang welcome
+    //                 router.replace("/(auth)/welcome");
+    //             }
 
-                await AsyncStorage.removeItem("token");
-            } catch (e) {
-                console.warn("Error fetching account:", e);
-            } finally {
-                await SplashScreen.hideAsync();
-            }
-        }
+    //             await AsyncStorage.removeItem("token");
+    //         } catch (e) {
+    //             console.warn("Error fetching account:", e);
+    //         } finally {
+    //             await SplashScreen.hideAsync();
+    //         }
+    //     }
 
-        prepare();
-    }, []);
+    //     prepare();
+    // }, []);
     if (true) {
         return (
-            <Redirect href={"/(auth)/welcome"} />
+            <Redirect href={"/(tabs)"} />
         )
     }
     return (

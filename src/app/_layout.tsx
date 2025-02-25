@@ -22,11 +22,13 @@ const RootLayout = () => {
                         <Stack.Screen name="(news)/kiniem" options={{ headerShown: false }} />
                         <Stack.Screen name="(news)/sandeal" options={{ headerShown: false }} />
                         <Stack.Screen name="(news)/tichdiem" options={{ headerShown: false }} />
+                        <Stack.Screen name="(news)/allnew" options={{ headerShown: false }} />
 
                         <Stack.Screen name="(endow)/xetoanthang" options={{ headerShown: false }} />
                         <Stack.Screen name="(endow)/banmoi" options={{ headerShown: false }} />
                         <Stack.Screen name="(endow)/thue7cho" options={{ headerShown: false }} />
                         <Stack.Screen name="(endow)/dealhot" options={{ headerShown: false }} />
+                        <Stack.Screen name="(endow)/allendow" options={{ headerShown: false }} />
 
                         <Stack.Screen name="(account)/info" options={{ headerShown: false }} />
                         <Stack.Screen name="(account)/changepass" options={{ headerShown: false }} />
@@ -34,13 +36,15 @@ const RootLayout = () => {
 
                         <Stack.Screen name="(search)/search" options={{ headerShown: false }} />
                         <Stack.Screen name="(search)/searchto" options={{ headerShown: false }} />
-                        <Stack.Screen name="(search)/date" options={{ headerShown: false }} /> 
+                        <Stack.Screen name="(search)/date" options={{ headerShown: false }} />
 
 
-                        <Stack.Screen name="(station)/miendong" options={{ headerShown: false }} /> 
-                        <Stack.Screen name="(station)/mientay" options={{ headerShown: false }} /> 
-                        <Stack.Screen name="(station)/dalat" options={{ headerShown: false }} /> 
-                        <Stack.Screen name="(station)/dongcu" options={{ headerShown: false }} /> 
+                        <Stack.Screen name="(station)/miendong" options={{ headerShown: false }} />
+                        <Stack.Screen name="(station)/mientay" options={{ headerShown: false }} />
+                        <Stack.Screen name="(station)/dalat" options={{ headerShown: false }} />
+                        <Stack.Screen name="(station)/dongcu" options={{ headerShown: false }} />
+                        <Stack.Screen name="(station)/allstation" options={{ headerShown: false }} />
+
 
 
                     </Stack>

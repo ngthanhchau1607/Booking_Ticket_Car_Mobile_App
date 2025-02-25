@@ -7,7 +7,7 @@ import { APP_COLOR } from "@/utils/constant"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Link, router } from "expo-router"
 import { useState } from "react"
-import { SafeAreaView, StyleSheet, Text, View } from "react-native"
+import { Keyboard, SafeAreaView, StyleSheet, Text, View } from "react-native"
 import Toast from "react-native-root-toast"
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         gap: 10
     },
-
 })
 
 const LoginPage = () => {
@@ -24,14 +23,30 @@ const LoginPage = () => {
     const [password, setPassword] = useState<string>("")
     const { setAppState } = useCurrentApp();
     const handleLogin = async () => {
+        Keyboard.dismiss();
+        // Kiểm tra nếu có trường nào bị trống
+        if (!email || !password) {
+            Toast.show("Vui lòng điền đầy đủ thông tin.", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: APP_COLOR.ORANGE,
+                opacity: 1,
+            });
+            return; // Dừng hàm nếu có trường bị trống
+        }
+
         try {
             const res = await loginApi(email, password);
+            console.log("API response:", res);  // Xem dữ liệu trả về từ API
+
+            // Kiểm tra cấu trúc dữ liệu trả về
             if (res && res.data && res.data.token) {
                 await AsyncStorage.setItem("token", res.data.token);
                 setAppState(res.data);
-                console.log("check phone", res.data.user)
+                console.log("check phone", res.data.user);
                 router.replace("/(tabs)");
             } else {
+                console.log("Login failed. Response:", res); // Xem phản hồi khi đăng nhập thất bại
                 Toast.show("Đăng nhập thất bại. Vui lòng thử lại.", {
                     duration: Toast.durations.LONG,
                     textColor: "white",
@@ -40,7 +55,7 @@ const LoginPage = () => {
                 });
             }
         } catch (error) {
-            console.log("Lỗi: ", error);
+            console.log("Lỗi kết nối: ", error);
             Toast.show("Lỗi kết nối. Vui lòng thử lại sau.", {
                 duration: Toast.durations.LONG,
                 textColor: "white",
@@ -49,6 +64,7 @@ const LoginPage = () => {
             });
         }
     }
+
 
     return (
         // <SafeAreaView>

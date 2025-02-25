@@ -6,7 +6,7 @@ import { APP_COLOR } from "@/utils/constant"
 import axios from "axios"
 import { Link } from "expo-router"
 import { useEffect, useState } from "react"
-import { SafeAreaView, StyleSheet, Text, View } from "react-native"
+import { Keyboard, SafeAreaView, StyleSheet, Text, View } from "react-native"
 import Toast from "react-native-root-toast"
 const styles = StyleSheet.create({
     container: {
@@ -34,12 +34,31 @@ const SignUpPage = () => {
     // }, [])
 
     const handleSignUp = async () => {
+        Keyboard.dismiss();
+        // Kiểm tra nếu có trường nào bị trống
+        if (!name || !email || !numberPhone || !password) {
+            Toast.show("Vui lòng điền đầy đủ thông tin.", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: APP_COLOR.ORANGE,
+                opacity: 1,
+            });
+            return; // Dừng hàm nếu có trường bị trống
+        }
+
         try {
             const res = await registerApi(name, email, numberPhone, password);
             console.log("check data", name, email, numberPhone, password)
             if (res.data) {
                 console.log("check data res", res.data)
                 console.log("NumberPhone in response:", res.data.numberPhone);
+                // Thông báo thành công
+                Toast.show("Đăng ký thành công!", {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: APP_COLOR.ORANGE,
+                    opacity: 1,
+                });
             } else {
                 const m = Array.isArray(res.message) ? res.message[0] : res.message
                 Toast.show(res.m, {
