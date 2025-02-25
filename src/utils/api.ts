@@ -1,9 +1,9 @@
 import axios from "@/utils/api.customize";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const registerApi = (name: string, email: string, phone: string, password: string) => {
+export const registerApi = (name: string, email: string, numberPhone: string, password: string) => {
     const url = `/api/v1/users/register`;
-    return axios.post(url, { name, email, phone, password });
+    return axios.post(url, { name, email, numberPhone, password });
     // <IBackendRes<any>>
 }
 

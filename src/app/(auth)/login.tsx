@@ -29,6 +29,7 @@ const LoginPage = () => {
             if (res && res.data && res.data.token) {
                 await AsyncStorage.setItem("token", res.data.token);
                 setAppState(res.data);
+                console.log("check phone", res.data.user)
                 router.replace("/(tabs)");
             } else {
                 Toast.show("Đăng nhập thất bại. Vui lòng thử lại.", {

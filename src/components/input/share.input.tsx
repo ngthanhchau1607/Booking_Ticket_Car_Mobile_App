@@ -33,11 +33,12 @@ interface IProps {
     secureTextEntry?: boolean
     value: any
     setValue: (v: any) => void
+    disabled?: boolean
 }
 const ShareInput = (props: IProps) => {
     const [isFocus, setIsFocus] = useState<boolean>(false);
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-    const { title, keyboardType, secureTextEntry = false, value, setValue } = props;
+    const { title, keyboardType, secureTextEntry, disabled = false, value, setValue } = props;
     return (
         <View style={styles.inputGroup}>
             {title && <Text style={styles.text}>{title}</Text>}
@@ -49,9 +50,15 @@ const ShareInput = (props: IProps) => {
                     onBlur={() => setIsFocus(false)}
                     keyboardType={keyboardType}
                     style={[styles.input,
-                    { borderColor: isFocus ? APP_COLOR.ORANGE : APP_COLOR.GREY }
+                    {
+                        borderColor: isFocus ? APP_COLOR.ORANGE : APP_COLOR.GREY,
+                        backgroundColor: disabled ? '#f0f0f0' : 'white', // Màu nền xám khi disabled
+                        color: disabled ? '#b0b0b0' : 'black' // Màu chữ xám khi disabled
+                    }
                     ]}
                     secureTextEntry={secureTextEntry && !isShowPassword}
+                    editable={!disabled}
+
                 />
                 {secureTextEntry &&
                     <FontAwesome5

@@ -24,7 +24,7 @@ const SignUpPage = () => {
 
     const [name, setName] = useState<string>("")
     const [email, setEmail] = useState<string>("")
-    const [phone, setPhone] = useState<string>("")
+    const [numberPhone, setNumberPhone] = useState<string>("")
     const [password, setPassword] = useState<string>("")
 
     // useEffect(() => {
@@ -35,9 +35,11 @@ const SignUpPage = () => {
 
     const handleSignUp = async () => {
         try {
-            const res = await registerApi(name, email, phone, password);
+            const res = await registerApi(name, email, numberPhone, password);
+            console.log("check data", name, email, numberPhone, password)
             if (res.data) {
-                console.log(res)
+                console.log("check data res", res.data)
+                console.log("NumberPhone in response:", res.data.numberPhone);
             } else {
                 const m = Array.isArray(res.message) ? res.message[0] : res.message
                 Toast.show(res.m, {
@@ -80,8 +82,8 @@ const SignUpPage = () => {
             <ShareInput
                 title="Phone"
                 keyboardType="number-pad"
-                value={phone}
-                setValue={setPhone}
+                value={numberPhone}
+                setValue={setNumberPhone}
             />
             <ShareInput
                 title="Password"

@@ -1,60 +1,53 @@
 import { Link, Redirect, router, SplashScreen } from "expo-router";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native"
-import ShareButton from "../components/button/share.button";
-import { APP_COLOR } from "../utils/constant";
-import vebb from '@/assets/ve/vebb.jpg'
-import bg from '@/assets/auth/welcome-background.png'
-import fbLogo from '@/assets/auth/facebook.png'
-import ggLogo from '@/assets/auth/google.png'
-import { LinearGradient } from "expo-linear-gradient";
-import TextBetweenLine from "@/components/more/text.between.line";
+import { Text, View } from "react-native"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from "react";
 import { getAccountAPi } from "@/utils/api";
 import { useCurrentApp } from "@/context/api.context";
 
 
-// // Keep the splash screen visible while we fetch resources
-// SplashScreen.preventAutoHideAsync();
+
 
 const AppRoot = () => {
-    // const { appState, setAppState } = useCurrentApp();
-    // useEffect(() => {
-    //     async function prepare() {
-    //         try {
-    //             const token = await AsyncStorage.getItem("token");
+    const { appState, setAppState } = useCurrentApp();
+    useEffect(() => {
+        async function prepare() {
+            try {
+                const token = await AsyncStorage.getItem("token");
 
-    //             if (!token) {
-    //                 // Nếu không có token, chuyển hướng đến trang welcome
-    //                 router.replace("/(auth)/welcome");
-    //                 return;
-    //             }
+                if (!token) {
+                    // Nếu không có token, chuyển hướng đến trang welcome
+                    router.replace("/(auth)/welcome");
+                    return;
+                }
 
-    //             // Nếu có token, thực hiện fetch dữ liệu người dùng
-    //             const res = await getAccountAPi();
+                // Nếu có token, thực hiện fetch dữ liệu người dùng
+                const res = await getAccountAPi();
 
-    //             if (res.data) {
-    //                 setAppState({
-    //                     user: res.data,
-    //                     token: token
-    //                 });
-    //                 router.replace("/(tabs)"); // Điều hướng đến trang tabs
-    //             } else {
-    //                 // Nếu không có dữ liệu từ API, chuyển hướng về trang welcome
-    //                 router.replace("/(auth)/welcome");
-    //             }
-    //         } catch (e) {
-    //             console.warn("Error fetching account:", e);
-    //         } finally {
-    //             await SplashScreen.hideAsync();
-    //         }
-    //     }
+                if (res.data) {
+                    setAppState({
+                        user: res.data,
+                        token: token
+                    });
+                    router.replace("/(tabs)"); // Điều hướng đến trang tabs
+                } else {
+                    // Nếu không có dữ liệu từ API, chuyển hướng về trang welcome
+                    router.replace("/(auth)/welcome");
+                }
 
-    //     prepare();
-    // }, []);
+                await AsyncStorage.removeItem("token");
+            } catch (e) {
+                console.warn("Error fetching account:", e);
+            } finally {
+                await SplashScreen.hideAsync();
+            }
+        }
+
+        prepare();
+    }, []);
     if (true) {
         return (
-            <Redirect href={"/(tabs)"} />
+            <Redirect href={"/(auth)/welcome"} />
         )
     }
     return (

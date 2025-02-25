@@ -6,13 +6,18 @@ import { useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const InfoAccount = () => {
-    const { theme, appState } = useCurrentApp();
+    const { appState } = useCurrentApp();
     const [userName, setUserName] = useState<string>(appState?.user.name || "");
-    const navigation = useNavigation(); // Khởi tạo navigation
+    const navigation = useNavigation(); // Khởi tạo navigation 
+
+    const [name, setName] = useState<string>("")
+    const [email, setEmail] = useState<string>("")
+    const [numberPhone, setNumberPhone] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
 
     const handleUpdate = () => {
-        // Xử lý khi nhấn nút cập nhật
-        console.log("Cập nhật thông tin");
+        console.log("Họ tên: ", appState?.user.name);
+        console.log("Số điện thoại: ", appState?.user.numberPhone);
     };
 
     return (
@@ -44,19 +49,21 @@ const InfoAccount = () => {
             <View style={styles.inputContainer}>
                 <ShareInput
                     title="Họ tên"
-                    value={userName}
+                    value={name}
+                    // appState?.user.name
                     setValue={setUserName}
                 />
                 <ShareInput
                     title="Email"
                     keyboardType="email-address"
                     value={appState?.user.email}
-                    setValue={setUserName}
+                    disabled={true}
+                    setValue={setEmail}
                 />
                 <ShareInput
                     title="Số điện thoại"
                     value={appState?.user.numberPhone}
-                    setValue={setUserName}
+                    setValue={setNumberPhone}
                 />
             </View>
 
