@@ -2,24 +2,76 @@ import { Ionicons } from "@expo/vector-icons"; // Import Icon từ Ionicons
 import { useNavigation } from "@react-navigation/native"; // Để sử dụng navigation
 import ShareInput from "@/components/input/share.input";
 import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from "react-native";
+import Toast from "react-native-root-toast";
+import { useCurrentApp } from "@/context/api.context";
+import { putChangePass } from "@/utils/api";
 
-const ChangePass = () => {
+const ChangePass = () => { 
+
+    const { appState } = useCurrentApp();
+    const id= appState?.user.id;  
+
     const [oldPassword, setOldPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
-    const navigation = useNavigation(); // Khởi tạo navigation
+    const navigation = useNavigation(); 
 
-    const handleUpdate = () => {
+    const handleUpdate = async () => { 
+        Keyboard.dismiss();
+
+        // In các giá trị mật khẩu ra console
+        console.log("Mật khẩu cũ: ", oldPassword);
+        console.log("Mật khẩu mới: ", newPassword);
+        console.log("Mật khẩu xác nhận: ", confirmPassword);
+    
         // Kiểm tra mật khẩu có khớp hay không
         if (newPassword !== confirmPassword) {
-            alert("Mật khẩu mới và mật khẩu xác nhận không khớp!");
+            Toast.show("Mật khẩu mới và mật khẩu xác nhận không khớp!", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: "#ff6600", // Màu nền của thông báo lỗi
+                opacity: 1,
+            });
             return;
         }
 
-        // Xử lý khi nhấn nút cập nhật
-        console.log("Cập nhật mật khẩu thành công!");
+        if (!oldPassword || !newPassword || !confirmPassword) {
+            Toast.show("Vui lòng điền đầy đủ thông tin.", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: "#ff6600", // Màu nền của thông báo lỗi
+                opacity: 1,
+            });
+            return;
+        }
+    
+        try {
+            // Gọi API putChangePass và truyền data
+            const response = await putChangePass(id, oldPassword, newPassword); 
+            console.log("check data",response)
+            if (response.status === 200) {
+                // Hiển thị thông báo thành công
+                Toast.show("Cập nhật mật khẩu thành công!", {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: "#28a745", // Màu nền của thông báo thành công
+                    opacity: 1,
+                });
+                // Quay lại trang trước
+                navigation.goBack();
+            }
+        } catch (error) {
+            // Hiển thị thông báo lỗi
+            Toast.show("Đã có lỗi xảy ra. Vui lòng thử lại.", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: "#ff6600", // Màu nền của thông báo lỗi
+                opacity: 1,
+            });
+        }
     };
+    
 
     return (
         <View style={styles.container}>
@@ -113,7 +165,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 40,
+        marginTop: 20,
     },
     updateButtonText: {
         color: "#fff",

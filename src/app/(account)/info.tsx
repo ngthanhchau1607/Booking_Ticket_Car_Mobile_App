@@ -1,23 +1,76 @@
-import { Ionicons } from "@expo/vector-icons"; // Import Icon từ Ionicons
-import { useNavigation } from "@react-navigation/native"; // Để sử dụng navigation
+import Toast from 'react-native-root-toast'; // Import đúng Toast
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import ShareInput from "@/components/input/share.input";
 import { useCurrentApp } from "@/context/api.context";
 import { useState } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Keyboard } from "react-native"; 
+import { putUpdateAccount } from "@/utils/api"; // Đảm bảo import đúng api
 
 const InfoAccount = () => {
-    const { appState } = useCurrentApp();
-    const [userName, setUserName] = useState<string>(appState?.user.name || "");
-    const navigation = useNavigation(); // Khởi tạo navigation 
+    const { appState ,setAppState} = useCurrentApp();
+    const navigation = useNavigation(); 
 
-    const [name, setName] = useState<string>("")
-    const [email, setEmail] = useState<string>("")
-    const [numberPhone, setNumberPhone] = useState<string>("")
-    const [password, setPassword] = useState<string>("")
+    const id= appState?.user.id;  
 
-    const handleUpdate = () => {
-        console.log("Họ tên: ", appState?.user.name);
-        console.log("Số điện thoại: ", appState?.user.numberPhone);
+    // chúng ta có id của thằng đó , thì gọi thằng deatail user ra , rồi cập nhật , rồi gọi ra tiếp 
+    const [name, setName] = useState<string>(appState?.user.name || "");
+    const [email, setEmail] = useState<string>(appState?.user.email || "");
+    const [numberPhone, setNumberPhone] = useState<string>(appState?.user.numberPhone || "");
+    // const [name, setName] = useState<string>(appState?.user.data.name || "");  dùng cái này nếu muốn thoát ra đăng nhập lại
+    const handleUpdate = async () => {
+        try {
+            Keyboard.dismiss();
+
+            if (!name || !numberPhone) {
+                Toast.show("Vui lòng điền đầy đủ thông tin.", {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: "#ff6600",  // Màu nền của thông báo lỗi
+                    opacity: 1,
+                });
+                return; 
+            }
+
+            // Gọi API để cập nhật thông tin người dùng
+            const response = await putUpdateAccount(id, name, numberPhone); 
+            console.log("check res",response.data)
+
+            // Kiểm tra phản hồi từ server
+            if (response && response.data ) {
+                Toast.show("Cập nhật thành công!", {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: "#4CAF50",  
+                    opacity: 1,
+                }); 
+
+            setAppState((prevState:any) => ({
+                ...prevState,
+                user: {
+                    ...prevState.user,
+                    name: response.data.name,  
+                    numberPhone: response.data.numberPhone,  
+                },
+            }));
+            } else {
+                // Nếu không thành công, hiển thị thông báo lỗi
+                Toast.show("Cập nhật thất bại. Vui lòng thử lại.", {
+                    duration: Toast.durations.LONG,
+                    textColor: "white",
+                    backgroundColor: "#ff6600",  // Màu nền của thông báo lỗi
+                    opacity: 1,
+                });
+            }
+        } catch (error) {
+            console.log("Lỗi kết nối: ", error);
+            Toast.show("Lỗi kết nối. Vui lòng thử lại sau.", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: "#ff6600",  // Màu nền của thông báo lỗi
+                opacity: 1,
+            });
+        }
     };
 
     return (
@@ -40,7 +93,7 @@ const InfoAccount = () => {
                 {/* Thêm ảnh từ URL */}
                 <Image
                     source={{
-                        uri: "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/469799460_1980961335743933_7427354179227411978_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=olKBcH_wAZ8Q7kNvgEz-jC5&_nc_oc=AdhlHPfYSdo15LVXgoRZk6tf4cWcWpCC4DFCi7it3QGcQplTU3u9vAatu16yfiQKOZfpWXp4rGQ52hHSPkKGlrHi&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=AVZVCIwt4Pvl_H9ADHnz7PO&oh=00_AYDbR1pjPfVVafDvzFE_Hle1w7awKpCm8sZ0VczDIElFIw&oe=67BB5992",
+                        uri: "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/469799460_1980961335743933_7427354179227411978_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc",
                     }}
                     style={styles.avatar}
                 />
@@ -50,19 +103,18 @@ const InfoAccount = () => {
                 <ShareInput
                     title="Họ tên"
                     value={name}
-                    // appState?.user.name
-                    setValue={setUserName}
+                    setValue={setName}
                 />
                 <ShareInput
                     title="Email"
                     keyboardType="email-address"
-                    value={appState?.user.email}
+                    value={email}
                     disabled={true}
                     setValue={setEmail}
                 />
                 <ShareInput
                     title="Số điện thoại"
-                    value={appState?.user.numberPhone}
+                    value={numberPhone}
                     setValue={setNumberPhone}
                 />
             </View>

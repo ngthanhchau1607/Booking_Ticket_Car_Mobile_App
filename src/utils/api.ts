@@ -19,6 +19,25 @@ export const getAccountAPi = () => {
 
 }
 
+export const putUpdateAccount = (id: string, name: string ,numberPhone: string) => {
+    const url = `/api/v1/users/update/${id}`; 
+    const data = {
+        name,        
+        numberPhone, 
+    };
+    return axios.put<IBackendRes<IUserLogin>>(url, data)
+
+}
+
+export const putChangePass = ( id: string,oldPassword: string ,newPassword: string) => {
+    const url = `/api/v1/users/update/${id}`; 
+    const data = {
+        oldPassword,        
+        newPassword, 
+    };
+    return axios.put(url, data)
+
+}
 
 export const getfromProvince = () => {
     const url = `/api/v1/stations/province`;

@@ -5,12 +5,14 @@ import { TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LocationProvider } from "@/context/search.context";
+import AppRoot from ".";
 
 const RootLayout = () => {
     return (
         <RootSiblingParent>
             <AppProvider>
                 <LocationProvider>
+                <AppRoot />
                     <Stack>
                         <Stack.Screen name="index" options={{ headerShown: false }} />
                         <Stack.Screen name="(auth)/signup" options={{ headerShown: false }} />
@@ -37,6 +39,7 @@ const RootLayout = () => {
                         <Stack.Screen name="(search)/search" options={{ headerShown: false }} />
                         <Stack.Screen name="(search)/searchto" options={{ headerShown: false }} />
                         <Stack.Screen name="(search)/date" options={{ headerShown: false }} />
+                        <Stack.Screen name="(search)/result" options={{ headerShown: false }} />
 
 
                         <Stack.Screen name="(station)/miendong" options={{ headerShown: false }} />

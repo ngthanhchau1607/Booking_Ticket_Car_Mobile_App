@@ -87,7 +87,7 @@ const BannerHome = () => {
                 </TouchableOpacity>
 
                 {/* Nút tìm kiếm */}
-                <Button mode="contained" style={styles.searchButton}>
+                <Button mode="contained" style={styles.searchButton}  onPress={()=>router.navigate("/(search)/result")}>
                     <Text style={{ color: "black" }}>Tìm kiếm</Text>
                 </Button>
             </Card.Content>

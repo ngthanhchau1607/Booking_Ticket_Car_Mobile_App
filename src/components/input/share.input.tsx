@@ -1,6 +1,6 @@
 import { APP_COLOR } from "@/utils/constant";
 import { useState } from "react";
-import { KeyboardTypeOptions, StyleSheet, Text, TextInput, View } from "react-native";
+import { Keyboard, KeyboardTypeOptions, StyleSheet, Text, TextInput, View } from "react-native";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 const styles = StyleSheet.create({
@@ -24,50 +24,64 @@ const styles = StyleSheet.create({
         right: 10,
         top: 10,
     }
-}
-)
+});
 
 interface IProps {
-    title?: string,
-    keyboardType?: KeyboardTypeOptions
-    secureTextEntry?: boolean
-    value: any
-    setValue: (v: any) => void
-    disabled?: boolean
+    title?: string;
+    keyboardType?: KeyboardTypeOptions;
+    secureTextEntry?: boolean;
+    value: any;
+    setValue: (v: any) => void;
+    disabled?: boolean;
+    onChangeText?: (text: string) => void; // Thêm onChangeText vào props
 }
+
 const ShareInput = (props: IProps) => {
     const [isFocus, setIsFocus] = useState<boolean>(false);
     const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-    const { title, keyboardType, secureTextEntry, disabled = false, value, setValue } = props;
+    const { title, keyboardType, secureTextEntry, disabled = false, value, setValue, onChangeText } = props;
+
+    const handleChangeText = (text: string) => {
+        setValue(text);
+        // Gọi hàm onChangeText nếu có
+        if (onChangeText) {
+            onChangeText(text);
+        }
+    };
+
     return (
         <View style={styles.inputGroup}>
             {title && <Text style={styles.text}>{title}</Text>}
             <View>
                 <TextInput
                     value={value}
-                    onChangeText={(text) => setValue(text)}
+                    onChangeText={handleChangeText} // Sử dụng handleChangeText
                     onFocus={() => setIsFocus(true)}
                     onBlur={() => setIsFocus(false)}
                     keyboardType={keyboardType}
-                    style={[styles.input,
-                    {
-                        borderColor: isFocus ? APP_COLOR.ORANGE : APP_COLOR.GREY,
-                        backgroundColor: disabled ? '#f0f0f0' : 'white', // Màu nền xám khi disabled
-                        color: disabled ? '#b0b0b0' : 'black' // Màu chữ xám khi disabled
-                    }
+                    style={[
+                        styles.input,
+                        {
+                            borderColor: isFocus ? APP_COLOR.ORANGE : APP_COLOR.GREY,
+                            backgroundColor: disabled ? '#f0f0f0' : 'white',
+                            color: disabled ? '#b0b0b0' : 'black'
+                        }
                     ]}
                     secureTextEntry={secureTextEntry && !isShowPassword}
                     editable={!disabled}
-
                 />
-                {secureTextEntry &&
+                {secureTextEntry && (
                     <FontAwesome5
                         style={styles.eye}
-                        name={isShowPassword ? "eye" : "eye-slash"} size={20} color="black"
+                        name={isShowPassword ? "eye" : "eye-slash"}
+                        size={20}
+                        color="black"
                         onPress={() => setIsShowPassword(!isShowPassword)}
-                    />}
+                    />
+                )}
             </View>
         </View>
-    )
-}
+    );
+};
+
 export default ShareInput;
