@@ -26,6 +26,7 @@
     "react-native-axios": "^0.17.1",
     "react-native-calendars": "^1.1309.1",
     "react-native-datepicker": "^1.7.2",
+    "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.13.1",
     "react-native-reanimated-carousel": "4.0.0-canary.14",
     "react-native-root-toast": "3.6.0",
