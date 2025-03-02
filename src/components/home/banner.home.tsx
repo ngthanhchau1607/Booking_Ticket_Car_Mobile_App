@@ -1,19 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { TextInput, Button, Card } from "react-native-paper";
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { Button, Card } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
 import { useLocation } from "@/context/search.context";
+import { getAllTripByUser } from "@/utils/api";
+import { useTrip } from "@/context/trip.context";
+
+// Hàm chuyển đổi ngày (chỉ sử dụng cho việc gửi dữ liệu)
+const formatDateForSend = (date: string) => {
+    const parts = date.split('/');
+    const day = parts[0];
+    const month = parts[1];
+    const year = parts[2];
+    
+    // Trả về định dạng yyyy-mm-dd
+    return `${year}-${month}-${day}`;
+};
 
 const BannerHome = () => {
     const { departure, destination ,date} = useLocation();
+    const { setTripData } = useTrip();  // Sử dụng hook để lấy setTripData từ TripContext
     const router = useRouter();
 
     useEffect(() => {
-    }, [departure, destination,date]);
-
+    }, [departure, destination, date]);
 
     const handleNavigateToSearch = (type: string) => {
         if (type === "departure") {
@@ -23,10 +36,41 @@ const BannerHome = () => {
         }
     };
 
-
-
     const handleNavigateToDate = () => {
         router.push("/(search)/date");
+    };
+
+    const handleSearch = async () => {
+        // Kiểm tra nếu bất kỳ ô input nào chưa được điền thông tin
+        if (departure === "Nơi xuất phát" || !departure) {
+            Alert.alert("Thông báo", "Vui lòng chọn nơi xuất phát.");
+        } else if (destination === "Nơi đến" || !destination) {
+            Alert.alert("Thông báo", "Vui lòng chọn nơi đến.");
+        } else if (date === "Ngày đi" || !date) {
+            Alert.alert("Thông báo", "Vui lòng chọn ngày đi.");
+        } else {
+            // Gọi API với dữ liệu đã được định dạng
+            const formattedDate = formatDateForSend(date);  // Định dạng ngày đi 
+            console.log("check data ", departure,destination,formattedDate)
+    
+            try {
+                // Gọi API để lấy dữ liệu chuyến đi
+                const response = await getAllTripByUser(departure, destination, formattedDate);
+                console.log("Kết quả chuyến đi:", response.data);
+    
+                // Lưu kết quả vào context nếu có dữ liệu
+                if (response.data && response.data.length > 0) {
+                    setTripData(response.data);  // Lưu vào context
+                    router.push("/(search)/result");
+                } 
+            } catch (error) {
+                console.error("Lỗi khi gọi API:", error);
+                Alert.alert("Lỗi", "Có lỗi xảy ra khi tìm kiếm chuyến đi.");
+            }
+            finally{
+                router.push("/(search)/result");
+            }
+        }
     };
 
     return (
@@ -87,7 +131,7 @@ const BannerHome = () => {
                 </TouchableOpacity>
 
                 {/* Nút tìm kiếm */}
-                <Button mode="contained" style={styles.searchButton}  onPress={()=>router.navigate("/(search)/result")}>
+                <Button mode="contained" style={styles.searchButton} onPress={handleSearch}>
                     <Text style={{ color: "black" }}>Tìm kiếm</Text>
                 </Button>
             </Card.Content>

@@ -6,12 +6,16 @@ import { useNavigation } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LocationProvider } from "@/context/search.context";
 import AppRoot from ".";
+import { TripProvider } from "@/context/trip.context";
+import { TripPassengerProvider } from "@/context/trippassenger.context";
 
 const RootLayout = () => {
     return (
         <RootSiblingParent>
             <AppProvider>
-                <LocationProvider>
+                <LocationProvider> 
+                <TripProvider>
+                <TripPassengerProvider>
                 <AppRoot />
                     <Stack>
                         <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -51,6 +55,8 @@ const RootLayout = () => {
 
 
                     </Stack>
+                    </TripPassengerProvider>
+                    </TripProvider>
                 </LocationProvider>
             </AppProvider>
         </RootSiblingParent >

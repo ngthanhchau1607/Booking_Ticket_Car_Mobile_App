@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,10 +16,16 @@ interface BusCompanyModalProps {
     selectedCompanies: string[];
     onApply: (selected: string[]) => void;
     onClear: () => void;
+    onSelect: (selected: string[]) => void;  // Thêm prop onSelect
 }
 
-const BusCompanyModal: React.FC<BusCompanyModalProps> = ({ visible, onClose, companies, selectedCompanies, onApply, onClear }) => {
+const BusCompanyModal: React.FC<BusCompanyModalProps> = ({ visible, onClose, companies, selectedCompanies, onApply, onClear, onSelect }) => {
     const [selected, setSelected] = useState<string[]>(selectedCompanies);
+
+    // Lắng nghe khi selected thay đổi và gọi onSelect
+    useEffect(() => {
+        onSelect(selected);
+    }, [selected, onSelect]);
 
     const toggleSelect = (company: string) => {
         setSelected((prevSelected) =>

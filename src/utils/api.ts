@@ -45,6 +45,16 @@ export const getfromProvince = () => {
 
 }
 
+export const getAllTripByUser = (fromStation:string , toStation:string, startTime:string ) => {
+    const url = `/api/v1/trips/tripUser`;
+    return axios.post(url,{ fromStation,toStation ,startTime });
+}
+
+export const getTripPassengerByTripId = (tripId:string ) => {
+    const url = `/api/v1//tripPassenger/trip/${tripId}`;
+    return axios.get(url);
+}
+
 
 
 export const printAsyncStorage = () => {

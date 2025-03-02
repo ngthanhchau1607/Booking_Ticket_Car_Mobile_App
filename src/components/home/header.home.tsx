@@ -9,9 +9,6 @@ const HeaderHome = () => {
             {/* Header */}
             <View style={styles.header}>
                 <Text style={styles.logo}>🚍 Vexere</Text>
-                <TouchableOpacity>
-                    <Text style={styles.greeting}>Chào cháu 👋</Text>
-                </TouchableOpacity>
             </View>
 
             {/* Cam kết */}
