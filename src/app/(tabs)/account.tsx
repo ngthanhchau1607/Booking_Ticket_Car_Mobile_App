@@ -25,7 +25,7 @@ const AccountPage = () => {
                 }}  >
                 <Image
                     style={{ height: 60, width: 60, borderRadius: 30 }}
-                    source={{ uri: "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/469799460_1980961335743933_7427354179227411978_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=olKBcH_wAZ8Q7kNvgEz-jC5&_nc_oc=AdhlHPfYSdo15LVXgoRZk6tf4cWcWpCC4DFCi7it3QGcQplTU3u9vAatu16yfiQKOZfpWXp4rGQ52hHSPkKGlrHi&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=AVZVCIwt4Pvl_H9ADHnz7PO&oh=00_AYDbR1pjPfVVafDvzFE_Hle1w7awKpCm8sZ0VczDIElFIw&oe=67BB5992" }}
+                    source={require("@/assets/avatar.jpg")}
                 />
                 <View>
                     <Text style={{ color: "white", fontSize: 20 }} >Xin chao</Text>

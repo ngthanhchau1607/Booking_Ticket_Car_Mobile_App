@@ -46,7 +46,7 @@ const AppRoot = () => {
 
     if (!appState?.user) {
         return (
-            <Redirect href="/(tabs)" />
+            <Redirect href="/(auth)/welcome" />
         );
     }
 

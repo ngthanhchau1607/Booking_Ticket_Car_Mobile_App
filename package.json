@@ -15,6 +15,7 @@
     "@react-native-vector-icons/common": "^11.0.0",
     "@shopify/flash-list": "^1.7.3",
     "axios": "1.7.5",
+    "dayjs": "^1.11.13",
     "expo": "~52.0.31",
     "expo-constants": "16.0.2",
     "expo-linear-gradient": "13.0.2",

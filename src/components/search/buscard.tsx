@@ -10,10 +10,9 @@ interface BusCardProps {
     arrivalLocation: string;
     vehicle: string;
     vehicleType:string,
-    vehicleImage: string;
+    vehicleImage: any;
     availableSeats: number;
     rating: number;
-    totalReviews: number;
     newPrice: number;
     onSelect: () => void;
 }
@@ -28,7 +27,6 @@ const BusCard: React.FC<BusCardProps> = ({
     vehicleImage,
     availableSeats,
     rating,
-    totalReviews,
     newPrice,
     onSelect
 }) => {
@@ -45,12 +43,12 @@ const BusCard: React.FC<BusCardProps> = ({
             <View style={styles.divider} />
 
             <View style={styles.busInfo}>
-                <Image source={{ uri: vehicleImage }} style={styles.vehicleImage} />
+            <Image source={vehicleImage} style={styles.vehicleImage} />
                 <View style={styles.vehicleDetails}>
                     <Text style={styles.vehicleName}>{vehicle}</Text>
                     <Text style={styles.vehicleType}>{vehicleType}</Text>
                     <Text style={styles.rating}>
-                        ⭐ {rating} ({totalReviews} đánh giá)
+                        ⭐ {rating} 
                     </Text>
                     <Text style={styles.availableSeats}>🚍 {availableSeats} chỗ trống</Text>
                 </View>

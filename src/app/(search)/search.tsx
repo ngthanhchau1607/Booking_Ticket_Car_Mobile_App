@@ -6,6 +6,16 @@ import { FlashList } from "@shopify/flash-list"; // Import FlashList
 import { getfromProvince } from "@/utils/api";
 import { useLocation } from "@/context/search.context";
 
+const removeVietnameseAccent = (str: string) => {
+    return str
+        .normalize("NFD") // Tách dấu ra khỏi chữ cái
+        .replace(/[\u0300-\u036f]/g, "") // Xóa dấu
+        .replace(/Đ/g, "D") // Chuyển Đ -> D
+        .replace(/đ/g, "d") // Chuyển đ -> d
+        .replace(/ê/g, "e") // Chuyển đ -> d
+        .replace(/[^\w\s]/g, "") // Xóa ký tự đặc biệt (nếu có)
+        .trim(); // Xóa khoảng trắng thừa
+};
 
 const Search = () => {
     const navigation = useNavigation();
@@ -14,17 +24,14 @@ const Search = () => {
     const [provinces, setProvinces] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
 
-
     const handleGoBack = () => {
         navigation.goBack();
     };
-
 
     const handleProvincePress = (province: string) => {
         setDeparture(province);
         navigation.goBack();
     };
-
 
     // Hàm gọi API để lấy danh sách các tỉnh
     const fetchProvinces = async () => {
@@ -78,25 +85,26 @@ const Search = () => {
 
             {/* Danh sách tỉnh */}
             <FlashList
-                data={provinces
-                    .filter((province) =>
-                        province.toLowerCase().includes(searchTerm.toLowerCase()) // So sánh không phân biệt chữ hoa chữ thường
-                    )
-                    .map((province) => removePrefix(province)) // Loại bỏ tiền tố "Tỉnh" và "Thành phố"
-                }
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handleProvincePress(item)}>
-                        <View style={styles.provinceItem}>
-                            <Text style={styles.provinceText}>{item}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
-                keyExtractor={(item, index) => index.toString()} // Dùng index làm key
-                refreshing={loading} // Thêm trạng thái loading cho FlashList
-                onRefresh={fetchProvinces} // Gọi trực tiếp fetchProvinces
-            />
+    data={provinces
+        .map(removePrefix) // Loại bỏ "Tỉnh" hoặc "Thành phố"
+        .filter((province) =>
+            removeVietnameseAccent(province)
+                .toLowerCase()
+                .includes(removeVietnameseAccent(searchTerm).toLowerCase()) // So sánh không dấu
+        )
+    }
+    renderItem={({ item }) => (
+        <TouchableOpacity onPress={() => handleProvincePress(item)}>
+            <View style={styles.provinceItem}>
+                <Text style={styles.provinceText}>{item}</Text>
+            </View>
+        </TouchableOpacity>
+    )}
+    keyExtractor={(item, index) => index.toString()} // Dùng index làm key
+    refreshing={loading}
+    onRefresh={fetchProvinces}
+/>
         </View>
-
     );
 };
 

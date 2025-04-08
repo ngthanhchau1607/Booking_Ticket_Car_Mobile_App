@@ -7,6 +7,16 @@ export const registerApi = (name: string, email: string, numberPhone: string, pa
     // <IBackendRes<any>>
 }
 
+export const checkEmailUser = ( email: string) => {
+    const url = `/api/v1/users/checkmail`;
+    return axios.post(url, { email });
+}
+
+export const sendOtp = ( email: string) => {
+    const url = `/api/v1/users/otp`;
+    return axios.post(url, { email });
+}
+
 export const loginApi = (email: string, password: string) => {
     const url = `/api/v1/users/login`;
     return axios.post<IBackendRes<IUserLogin>>(url, { email, password });

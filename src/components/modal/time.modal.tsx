@@ -63,9 +63,15 @@ const TimeModal: React.FC<TimeModalProps> = ({ visible, onClose, selectedTime, o
 
                 {/* Lọc theo lựa chọn */}
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.clearButton} onPress={onClear}>
-                        <Text style={styles.clearButtonText}>Xóa lọc</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity
+    style={styles.clearButton}
+    onPress={() => {
+      setTimeOption("default"); // reset radio
+      onClear();                // báo về cha (nếu cần lọc lại dữ liệu)
+    }}
+  >
+    <Text style={styles.clearButtonText}>Xóa lọc</Text>
+  </TouchableOpacity>
                     <TouchableOpacity style={styles.applyButton} onPress={() => onApply(selectedTime, timeOption)}>
                         <Text style={styles.applyButtonText}>Áp dụng</Text>
                     </TouchableOpacity>
@@ -91,8 +97,8 @@ const styles = StyleSheet.create({
     applyButtonText: { fontSize: 16, color: "white" },
     separator: { 
         height: 1, 
-        backgroundColor: "#ccc", // Đường kẻ ngang màu xám
-        marginVertical: 10 // Khoảng cách trên và dưới đường kẻ
+        backgroundColor: "#ccc", 
+        marginVertical: 10 
     },
 });
 

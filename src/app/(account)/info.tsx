@@ -92,9 +92,9 @@ const InfoAccount = () => {
             <View style={styles.profileContainer}>
                 {/* Thêm ảnh từ URL */}
                 <Image
-                    source={{
-                        uri: "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/469799460_1980961335743933_7427354179227411978_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=6ee11a&_nc_ohc",
-                    }}
+                    source={
+                        require("@/assets/avatar.jpg")
+                    }
                     style={styles.avatar}
                 />
                 <Text style={styles.username}>{appState?.user.name}</Text>

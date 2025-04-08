@@ -103,9 +103,21 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, onApply }) 
 
                 {/* Footer with apply and clear buttons */}
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.clearButton} onPress={onClose}>
-                        <Text style={styles.clearButtonText}>Xóa lọc</Text>
-                    </TouchableOpacity>
+                    <TouchableOpacity
+  style={styles.clearButton}
+  onPress={() => {
+    setPickup("");
+    setDropoff("");
+    setBusType("");
+    setIsPickupModalVisible(false);
+    setIsDropoffModalVisible(false);
+    setIsBusTypeModalVisible(false);
+    // onApply({ pickup: "", dropoff: "", busType: "" }); // Trả về filter rỗng
+
+  }}
+>
+  <Text style={styles.clearButtonText}>Xóa lọc</Text>
+</TouchableOpacity>
                     <TouchableOpacity
                         style={styles.applyButton}
                         onPress={() => onApply({ pickup, dropoff, busType })}

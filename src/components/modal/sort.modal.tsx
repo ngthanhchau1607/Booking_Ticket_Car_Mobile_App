@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
-import { RadioButton } from "react-native-paper"; // Import RadioButton từ react-native-paper
+import { RadioButton } from "react-native-paper";
 
 interface SortModalProps {
     visible: boolean;
     onClose: () => void;
     onApply: (sortOption: string) => void;
+    selectedOption: string; // ✅ Thêm prop này
 }
 
-const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onApply }) => {
-    const [sortOption, setSortOption] = useState<string>("default"); // Mặc định, sớm nhất, muộn nhất, đánh giá, giá tăng/giảm
+const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onApply, selectedOption }) => {
+    const [sortOption, setSortOption] = useState<string>(selectedOption);
+
+    // ✅ Đồng bộ khi selectedOption từ ngoài thay đổi
+    useEffect(() => {
+        setSortOption(selectedOption);
+    }, [selectedOption]);
 
     const handleRadioChange = (value: string) => {
         setSortOption(value);
@@ -29,7 +35,6 @@ const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onApply }) => {
             style={styles.modal}
         >
             <View style={styles.modalContainer}>
-                {/* Header */}
                 <View style={styles.header}>
                     <Text style={styles.modalTitle}>Sắp xếp</Text>
                     <TouchableOpacity onPress={onClose}>
@@ -37,10 +42,8 @@ const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onApply }) => {
                     </TouchableOpacity>
                 </View>
 
-                {/* Ngăn cách giữa header và radio lọc */}
                 <View style={styles.separator} />
 
-                {/* Radio buttons để chọn sắp xếp */}
                 <View style={styles.radioGroup}>
                     <Text style={styles.radioLabel}>Lọc theo:</Text>
                     <RadioButton.Group onValueChange={handleRadioChange} value={sortOption}>
@@ -71,9 +74,13 @@ const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onApply }) => {
                     </RadioButton.Group>
                 </View>
 
-                {/* Footer với nút Xóa lọc và Áp dụng */}
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.clearButton} onPress={onClose}>
+                    <TouchableOpacity style={styles.clearButton} onPress={() => {
+    setSortOption("default");      // reset về mặc định trong modal
+    // onApply("default");            // báo cho cha biết reset luôn
+    // onClose();
+    
+  }}>
                         <Text style={styles.clearButtonText}>Xóa lọc</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.applyButton} onPress={() => onApply(sortOption)}>
@@ -101,8 +108,8 @@ const styles = StyleSheet.create({
     applyButtonText: { fontSize: 16, color: "white" },
     separator: {
         height: 1,
-        backgroundColor: "#ccc", // Đường kẻ ngang màu xám
-        marginVertical: 10, // Khoảng cách trên và dưới đường kẻ
+        backgroundColor: "#ccc",
+        marginVertical: 10,
     },
 });
 
