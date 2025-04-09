@@ -52,14 +52,6 @@ const SortModal: React.FC<SortModalProps> = ({ visible, onClose, onApply, select
                             <Text style={styles.radioText}>Mặc định</Text>
                         </View>
                         <View style={styles.radioOption}>
-                            <RadioButton value="earliest" color="#1e88e5" />
-                            <Text style={styles.radioText}>Giờ đi sớm nhất</Text>
-                        </View>
-                        <View style={styles.radioOption}>
-                            <RadioButton value="latest" color="#1e88e5" />
-                            <Text style={styles.radioText}>Giờ đi muộn nhất</Text>
-                        </View>
-                        <View style={styles.radioOption}>
                             <RadioButton value="highest_rating" color="#1e88e5" />
                             <Text style={styles.radioText}>Đánh giá cao nhất</Text>
                         </View>

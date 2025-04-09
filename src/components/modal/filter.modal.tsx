@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
+import { useTripPassenger } from "@/context/trippassenger.context";
 
 interface FilterModalProps {
     visible: boolean;
@@ -9,17 +10,30 @@ interface FilterModalProps {
     onApply: (filters: { pickup: string; dropoff: string; busType: string }) => void;
 }
 
-const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, onApply }) => {
+const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, onApply }) => { 
+
+  const { tripPassengers } = useTripPassenger();  
+
     const [pickup, setPickup] = useState<string>("");
     const [dropoff, setDropoff] = useState<string>("");
     const [busType, setBusType] = useState<string>("");
     const [isPickupModalVisible, setIsPickupModalVisible] = useState<boolean>(false);
     const [isDropoffModalVisible, setIsDropoffModalVisible] = useState<boolean>(false);
-    const [isBusTypeModalVisible, setIsBusTypeModalVisible] = useState<boolean>(false);
 
-    const pickupOptions = ["Hà Nội", "TP HCM", "Đà Nẵng"];
-    const dropoffOptions = ["Nha Trang", "Quy Nhơn", "Phan Thiết"];
-    const busTypes = ["Giường nằm", "Xe Limousine", "Xe khách thường"];
+
+    const [pickupOptions, setPickupOptions] = useState<string[]>([]);
+const [dropoffOptions, setDropoffOptions] = useState<string[]>([]);
+
+
+useEffect(() => {
+    if (visible && tripPassengers && tripPassengers.length > 0) {
+      const pickups = tripPassengers.map((item) => item.trip.from.address);
+      const dropoffs = tripPassengers.map((item) => item.trip.to.address);
+  
+      setPickupOptions(Array.from(new Set(pickups)));
+      setDropoffOptions(Array.from(new Set(dropoffs)));
+    }
+  }, [visible, tripPassengers]);
 
     // Hàm để hiển thị danh sách lựa chọn
     const renderOptionList = (options: string[], selected: string, onSelect: (item: string) => void) => (
@@ -86,21 +100,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, onApply }) 
                     {isDropoffModalVisible && renderOptionList(dropoffOptions, dropoff, setDropoff)}
                 </View>
 
-                {/* Loại xe */}
-                <View style={styles.filterSection}>
-                    <Text style={styles.filterLabel}>Loại xe</Text>
-                    <TouchableOpacity
-                        style={styles.filterItem}
-                        onPress={() => setIsBusTypeModalVisible(!isBusTypeModalVisible)}
-                    >
-                        <Text style={busType ? styles.selectedItemText : styles.placeholderText}>
-                            {busType || "Chọn loại xe"}
-                        </Text>
-                        <Ionicons name="chevron-down" size={18} color="#555" />
-                    </TouchableOpacity>
-                    {isBusTypeModalVisible && renderOptionList(busTypes, busType, setBusType)}
-                </View>
-
                 {/* Footer with apply and clear buttons */}
                 <View style={styles.footer}>
                     <TouchableOpacity
@@ -111,7 +110,6 @@ const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, onApply }) 
     setBusType("");
     setIsPickupModalVisible(false);
     setIsDropoffModalVisible(false);
-    setIsBusTypeModalVisible(false);
     // onApply({ pickup: "", dropoff: "", busType: "" }); // Trả về filter rỗng
 
   }}

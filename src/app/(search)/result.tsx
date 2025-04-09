@@ -61,6 +61,7 @@ const [filterOptions, setFilterOptions] = useState({
 
   const handleApplyTime = (time: number, option: string) => {
     setTimeOption(option);
+    setSortOption("default"); // reset giá
     setTimeModalVisible(false);
   };
 
@@ -133,39 +134,52 @@ const [filterOptions, setFilterOptions] = useState({
   };
 
   const filteredAndSortedTrips = useMemo(() => {
-    const filtered = (tripPassengers ?? []).filter(
-      (item) =>
+    let filtered = (tripPassengers ?? []).filter((item) => {
+      const matchesCompany =
         selectedCompanies.length === 0 ||
-        selectedCompanies.includes(item.passenger?.name)
-    );
+        selectedCompanies.includes(item.passenger?.name);
   
-    console.log("🧪 Lọc xong, trước khi sắp xếp:");
-    filtered.forEach(item => {
-      console.log(`Trip ID: ${item.id}, startTime: ${item.startTime}, typeof: ${typeof item.startTime}`);
+      const matchesPickup =
+        !filterOptions.pickup ||
+        item.trip?.from?.name.toLowerCase().includes(filterOptions.pickup.toLowerCase());
+  
+      const matchesDropoff =
+        !filterOptions.dropoff ||
+        item.trip?.to?.name.toLowerCase().includes(filterOptions.dropoff.toLowerCase());
+  
+      const matchesBusType =
+        !filterOptions.busType ||
+        item.passenger?.description?.toLowerCase().includes(filterOptions.busType.toLowerCase());
+  
+      return matchesCompany && matchesPickup && matchesDropoff && matchesBusType;
     });
   
     const sorted = filtered.sort((a, b) => {
       const timeA = dayjs(a.startTime, "HH:mm:ss").valueOf();
       const timeB = dayjs(b.startTime, "HH:mm:ss").valueOf();
+      const priceA = Number(a.passenger?.price) || 0;
+      const priceB = Number(b.passenger?.price) || 0;
   
-      console.log(`📊 So sánh ${a.startTime} (${timeA}) với ${b.startTime} (${timeB})`);
-  
-      if (timeOption === "earliest") {
+      if (timeOption === "time_asc") {
         return timeA - timeB;
       }
-      if (timeOption === "latest") {
+  
+      if (timeOption === "time_desc") {
         return timeB - timeA;
       }
-      return 0;
+  
+      switch (sortOption) {
+        case "price_asc":
+          return priceA - priceB;
+        case "price_desc":
+          return priceB - priceA;
+        default:
+          return 0;
+      }
     });
   
-    console.log("✅ Danh sách startTime sau khi lọc và sắp xếp:");
-    sorted.forEach((item) =>
-      console.log(`Trip ID: ${item.id} - Start Time: ${item.startTime}`)
-    );
-  
     return sorted;
-  }, [tripPassengers, selectedCompanies, timeOption]);
+  }, [tripPassengers, selectedCompanies, sortOption, timeOption, filterOptions]);
 
   if (isLoading && !loadingTimePassed) {
     return (
@@ -268,7 +282,13 @@ const [filterOptions, setFilterOptions] = useState({
   selectedOption={sortOption}
   onApply={(option) => {
     setSortOption(option);
-    setSortModalVisible(false); // Đóng modal khi nhấn áp dụng
+    
+    // Nếu chọn sắp xếp theo giá thì reset lọc giờ
+    if (["price_asc", "price_desc"].includes(option)) {
+      setTimeOption("default");
+    }
+
+    setSortModalVisible(false);
   }}
 />
 
