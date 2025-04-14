@@ -3,7 +3,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const registerApi = (name: string, email: string, numberPhone: string, password: string) => {
     const url = `/api/v1/users/register`;
-    return axios.post(url, { name, email, numberPhone, password });
+    console.log(url)
+    return axios.post(url, { name, email, numberPhone, password }); 
+  
     // <IBackendRes<any>>
 }
 
@@ -40,7 +42,7 @@ export const putUpdateAccount = (id: string, name: string ,numberPhone: string) 
 }
 
 export const putChangePass = ( id: string,oldPassword: string ,newPassword: string) => {
-    const url = `/api/v1/users/update/${id}`; 
+    const url = `/api/v1/users/change/${id}`; 
     const data = {
         oldPassword,        
         newPassword, 
@@ -64,6 +66,41 @@ export const getTripPassengerByTripId = (tripId:string ) => {
     const url = `/api/v1//tripPassenger/trip/${tripId}`;
     return axios.get(url);
 }
+
+export const postPayment = (totalAmount:string ,passenger:string ) => {
+    const url = `api/v1/payment`;
+    const data = {
+        totalAmount,        
+        passenger, 
+    };
+    return axios.post(url,data);
+}
+
+export const postTicket = (note: string,  totalAmount: number,   userId: number, tripPassengerId: number,  
+    pointPickup: number,  pointDropoff: number,  listSeat: { id: number }[] ) => {
+    const url = `api/v1/ticket/booking`;
+    const data = {
+        note,
+        totalAmount, 
+        userId,
+        tripPassengerId,
+        pointPickup,
+        pointDropoff,
+        listSeat
+    };
+    return axios.post(url,data);
+}
+
+export const checkStatus = () => {
+    const url = `api/v1/payment/status`;
+    return axios.get(url);
+}
+
+// export const getPickUpByTripPassengerId = (tripPassengerId:string ) => {
+//     const url = `/api/v1/timepoint/byTrip/${tripPassengerId}`;
+//     console.log("🔗 URL gửi tới backend:", url);
+//     return axios.get(url);
+// }
 
 
 

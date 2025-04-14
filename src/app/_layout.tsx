@@ -1,5 +1,5 @@
 import AppProvider from "@/context/api.context";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { TouchableOpacity, Text } from "react-native";
 import { useNavigation } from "expo-router";
@@ -8,14 +8,45 @@ import { LocationProvider } from "@/context/search.context";
 import AppRoot from ".";
 import { TripProvider } from "@/context/trip.context";
 import { TripPassengerProvider } from "@/context/trippassenger.context";
+import { InfoProvider } from "@/context/info.context";
+import { RegisterProvider } from "@/context/register.context";
+import * as Linking from "expo-linking";
+import { useEffect } from "react";
 
 const RootLayout = () => {
+
+    const router = useRouter();
+
+    useEffect(() => {
+        // Xử lý deep link khi ứng dụng được mở từ deep link
+        const handleDeepLink = ({ url }: { url: string }) => {
+          const { path } = Linking.parse(url);
+          console.log('Deep link detected:', url, '| parsed path:', path);
+    
+          // Kiểm tra xem deep link có phải là "payment-result" không
+          if (path === 'payment-result') {
+            router.replace('/(news)/baohiem'); // Chuyển hướng đến trang baohiem
+          }
+        };
+    
+        // Đăng ký sự kiện deep link
+        const subscription = Linking.addEventListener('url', handleDeepLink);
+    
+        // Cleanup khi component bị unmount
+        return () => {
+          subscription.remove();
+        };
+      }, []);
+
+
     return (
         <RootSiblingParent>
             <AppProvider>
+                <RegisterProvider>
                 <LocationProvider> 
                 <TripProvider>
                 <TripPassengerProvider>
+                <InfoProvider>
                 <AppRoot />
                     <Stack>
                         <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -53,12 +84,22 @@ const RootLayout = () => {
                         <Stack.Screen name="(station)/dongcu" options={{ headerShown: false }} />
                         <Stack.Screen name="(station)/allstation" options={{ headerShown: false }} />
 
+                        <Stack.Screen name="(seat)/seat" options={{ headerShown: false }} />
+                        <Stack.Screen name="(seat)/pickup" options={{ headerShown: false }} />
+                        <Stack.Screen name="(seat)/dropoff" options={{ headerShown: false }} />
+                        <Stack.Screen name="(seat)/info" options={{ headerShown: false }} />
+                        <Stack.Screen name="(seat)/infoticket" options={{ headerShown: false }} />
+                        <Stack.Screen name="(seat)/payment" options={{ headerShown: false }} />
+                        <Stack.Screen name="(seat)/momo" options={{ headerShown: false }} />
+
 
 
                     </Stack>
+                    </InfoProvider>
                     </TripPassengerProvider>
                     </TripProvider>
                 </LocationProvider>
+                </RegisterProvider>
             </AppProvider>
         </RootSiblingParent >
     );

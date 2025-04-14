@@ -11,7 +11,7 @@ const ChangePass = () => {
 
     const { appState } = useCurrentApp();
     const id= appState?.user.id;  
-
+   
     const [oldPassword, setOldPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -20,7 +20,18 @@ const ChangePass = () => {
     const handleUpdate = async () => { 
         Keyboard.dismiss();
 
+        if (!id) {
+            Toast.show("Không tìm thấy thông tin người dùng. Vui lòng thử lại.", {
+                duration: Toast.durations.LONG,
+                textColor: "white",
+                backgroundColor: "#ff6600",
+                opacity: 1,
+            });
+            return;
+        }
+
         // In các giá trị mật khẩu ra console
+        console.log("check",id)
         console.log("Mật khẩu cũ: ", oldPassword);
         console.log("Mật khẩu mới: ", newPassword);
         console.log("Mật khẩu xác nhận: ", confirmPassword);
@@ -49,7 +60,7 @@ const ChangePass = () => {
         try {
             // Gọi API putChangePass và truyền data
             const response = await putChangePass(id, oldPassword, newPassword); 
-            console.log("check data",response)
+            console.log("check data",response.data)
             if (response.status === 200) {
                 // Hiển thị thông báo thành công
                 Toast.show("Cập nhật mật khẩu thành công!", {

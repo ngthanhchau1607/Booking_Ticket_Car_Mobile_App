@@ -14,6 +14,7 @@ import BusCompanyModal from "@/components/modal/bus.modal";
 import TimeModal from "@/components/modal/time.modal"; 
 import SortModal from "@/components/modal/sort.modal";
 import FilterModal from "@/components/modal/filter.modal";
+import { useInfo } from "@/context/info.context";
 
 dayjs.extend(customParseFormat);
 
@@ -21,6 +22,8 @@ const ResultSearch = () => {
   const insets = useSafeAreaInsets();
   const { trips, setTripData } = useTrip(); 
   const { tripPassengers, setTripPassengers } = useTripPassenger(); 
+  const { setIdTripPassenger  } = useInfo(); 
+
   const [isLoading, setIsLoading] = useState(true);
   const [loadingTimePassed, setLoadingTimePassed] = useState(false); 
 
@@ -61,7 +64,7 @@ const [filterOptions, setFilterOptions] = useState({
 
   const handleApplyTime = (time: number, option: string) => {
     setTimeOption(option);
-    setSortOption("default"); // reset giá
+    setSortOption("default"); 
     setTimeModalVisible(false);
   };
 
@@ -240,7 +243,11 @@ const [filterOptions, setFilterOptions] = useState({
                   availableSeats={availableSeats}
                   rating={5.0}
                   newPrice={item.passenger?.price}
-                  onSelect={() => alert("clicked")}
+                  onSelect={() => {
+                    setIdTripPassenger(item.trip?.id); 
+                    router.push({ pathname: "/(seat)/seat", params: { tripId: item.trip?.id } });
+                    // router.push({ pathname: "/(seat)/seat", params: { tripId: item.trip?.id } });
+                  }} 
                 />
               );
             }}
@@ -298,7 +305,7 @@ const [filterOptions, setFilterOptions] = useState({
   onApply={(filters) => {
     setFilterOptions(filters);
     setFilterModalVisible(false);
-    console.log("🚏 Filter applied:", filters); // Bạn có thể áp dụng lọc vào useMemo nếu muốn
+    console.log("🚏 Filter applied:", filters); 
   }}
 />
     </View>
