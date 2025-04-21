@@ -22,6 +22,7 @@ const PickUp = () => {
   const [pickupLocations, setPickupLocations] = useState<any[]>([]);
 
 
+
   useEffect(() => {
     if (!idTripPassenger) return;
     const fetchTripPassengers = async () => {
@@ -73,12 +74,14 @@ const PickUp = () => {
   
     // ✅ Lưu object điểm đón vào context
     setPickupPoint({
+      id:selectedPickup.id,
       time: selectedPickup.time,
       name: selectedPickup.point.name,
       address: selectedPickup.point.address,
     });
   
     console.log("✅ Điểm đón đã lưu vào context:", {
+      id:selectedPickup.id,
       time: selectedPickup.time,
       name: selectedPickup.point.name,
       address: selectedPickup.point.address,

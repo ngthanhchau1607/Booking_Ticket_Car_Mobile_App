@@ -76,6 +76,7 @@ export const postPayment = (totalAmount:string ,passenger:string ) => {
     return axios.post(url,data);
 }
 
+
 export const postTicket = (note: string,  totalAmount: number,   userId: number, tripPassengerId: number,  
     pointPickup: number,  pointDropoff: number,  listSeat: { id: number }[] ) => {
     const url = `api/v1/ticket/booking`;
@@ -95,6 +96,62 @@ export const checkStatus = () => {
     const url = `api/v1/payment/status`;
     return axios.get(url);
 }
+
+export const getNhaXe = (id:string) => {
+    const url = `api/v1/vehicles/${id}`;
+    return axios.get(url);
+}
+export const getTicket = (userId: string) => {
+    const url = `api/v1/ticket`;
+    return axios.get(url, {
+      params: {
+        userId: userId
+      }
+    });
+  };
+
+  export const getTickerById = (id:string) => {
+    const url = `api/v1/ticket/${id}`;
+    return axios.get(url);
+}
+
+export const postRate = (numberRate:number ,userId:string ,passengerId:string) => {
+    const url = `api/v1/rate`;
+    const data = {
+        numberRate,        
+        userId, 
+        passengerId
+    };
+    return axios.post(url,data);
+}
+
+export const postComment = (content:string ,userId:string ,passengerId:string) => {
+    const url = `api/v1/comment`;
+    const data = {
+        content,        
+        userId, 
+        passengerId
+    };
+    return axios.post(url,data);
+}
+
+export const getCommentsByPassengerId = (passengerId: string) => {
+    const url = `api/v1/comment`;
+    return axios.get(url, {
+        params: {
+            passengerId: passengerId
+        }
+    });
+};
+
+export const getRateByPassengerId = (passengerId: string) => {
+    const url = `api/v1/rate/${passengerId}`;
+    return axios.get(url);
+};
+
+
+
+
 
 // export const getPickUpByTripPassengerId = (tripPassengerId:string ) => {
 //     const url = `/api/v1/timepoint/byTrip/${tripPassengerId}`;

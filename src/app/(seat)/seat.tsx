@@ -10,7 +10,7 @@ import SeatHeader from "@/components/seat/seat.header";
 
 const Seat = () => {
     const { date } = useLocation();
-    const { idTripPassenger,setSelectedSeatList,setTotalPrice } = useInfo();
+    const { idTripPassenger,setSelectedSeatList,setTotalPrice,setListSeat } = useInfo();
     const insets = useSafeAreaInsets();
   
     const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
@@ -98,6 +98,15 @@ const Seat = () => {
     const handleContinue = () => {
       // Cập nhật context khi nhấn "Tiếp tục"
       setSelectedSeatList(selectedSeats); // Cập nhật danh sách ghế đã chọn
+      
+      // Cập nhật danh sách ID ghế
+    const selectedSeatIds = selectedSeats.map(seatName => {
+      const seat = seatVehicle.find(s => s.name === seatName);
+      return seat?.id; // Có thể undefined nếu không tìm thấy
+    }).filter(Boolean); // Loại bỏ undefined (nếu có)
+
+    setListSeat(selectedSeatIds); // ✅ Cập nhật danh sách id ghế vào context
+
       setTotalPrice(totalPrice); // Cập nhật tổng tiền
       router.push("/(seat)/pickup"); // Chuyển hướng đến trang tiếp theo
     };

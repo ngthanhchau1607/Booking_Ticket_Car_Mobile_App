@@ -4,6 +4,7 @@ import BusCollection from "@/components/home/collection/buscollection";
 import EndCollection from "@/components/home/collection/end.collection";
 import EndowCollection from "@/components/home/collection/endow.collection";
 import NewsCollection from "@/components/home/collection/news.collection";
+import VehiclesCollection from "@/components/home/collection/vehicles.collection";
 
 import HeaderHome from "@/components/home/header.home";
 import SearchHome from "@/components/home/search.home";
@@ -15,7 +16,9 @@ const data = [
     { key: 1, name: "Các Nhà Xe Lớn", component: <BusCollection /> },
     { key: 2, name: "Ưu đãi nổi bật", component: <EndowCollection /> },
     { key: 3, name: "Tin tức mới", component: <NewsCollection /> },
-    { key: 4, name: "Nền tảng kết nối người dùng và nhà xe", component: <EndCollection /> },
+    { key: 4, name: "Một số nhà xe nổi tiếng", component: <VehiclesCollection /> },
+    { key: 5, name: "Nền tảng kết nối người dùng và nhà xe", component: <EndCollection /> },
+    
 ];
 
 const styles = StyleSheet.create({

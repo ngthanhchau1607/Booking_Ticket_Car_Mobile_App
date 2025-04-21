@@ -67,6 +67,7 @@ const DropOff = () => {
       );
       if (selectedLocationData) {
         setDropoffPoint({
+          id:selectedLocationData.id,
           time: selectedLocationData.time,
           name: selectedLocationData.point.name,
           address: selectedLocationData.point.address,

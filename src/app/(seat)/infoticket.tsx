@@ -79,7 +79,7 @@ const InfoTicket = () => {
 
             <View style={styles.row}>
               <Text style={styles.label}>Điểm đón:</Text>
-              <Text style={styles.infoText}>{pickupPoint?.name}</Text>
+              <Text style={styles.infoText}>{pickupPoint?.address}</Text>
             </View>
 
             <View style={styles.row}>
@@ -89,7 +89,7 @@ const InfoTicket = () => {
 
             <View style={styles.row}>
               <Text style={styles.label}>Điểm trả:</Text>
-              <Text style={styles.infoText}>{dropoffPoint?.name}</Text>
+              <Text style={styles.infoText}>{dropoffPoint?.address}</Text>
             </View>
 
             <View style={styles.row}>

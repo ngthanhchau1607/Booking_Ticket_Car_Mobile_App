@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import { postPayment, checkStatus } from "@/utils/api";
 import QRCode from "react-native-qrcode-svg";
 
+
 const Payment = () => {
   const insets = useSafeAreaInsets();
   const { date } = useLocation();
@@ -23,8 +24,9 @@ const Payment = () => {
     departureTime,
     departureDate,
     totalPrice,
-    contactInfo,
-  } = useInfo();
+  } = useInfo(); 
+
+
 
   const activeStep = 6;
 
@@ -92,9 +94,7 @@ const Payment = () => {
         const response = await checkStatus();
         if (response.data?.isPaid) {
           clearInterval(interval);
-          Alert.alert("✅ Thành công", "Bạn đã thanh toán thành công!", [
-            // { text: "Tiếp tục", onPress: () => router.push("/success") },
-          ]);
+          router.push("/success");
         } else {
           console.log("🕐 Chưa thanh toán...");
         }

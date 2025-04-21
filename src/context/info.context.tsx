@@ -12,12 +12,14 @@ export const InfoProvider = ({ children }: any) => {
     const [selectedSeats, setSelectedSeats] = useState<number>(0); // Lưu số ghế đã chọn
     const [totalAmount, setTotalAmount] = useState<number>(0); // Lưu tổng tiền
     const [pickupPoint, setPickupPoint] = useState<{
+        id:string;
         time: string;
         name: string;
         address: string;
       } | null>(null);
     
       const [dropoffPoint, setDropoffPoint] = useState<{
+        id:string;
         time: string;
         name: string;
         address: string;
@@ -39,7 +41,10 @@ export const InfoProvider = ({ children }: any) => {
     const [idTripPassenger, setIdTripPassenger] = useState<string>("ID chuyến đi");
 
     // Mảng chứa danh sách ghế đã chọn (có thể là mảng ID ghế hoặc mảng các đối tượng ghế)
-    const [selectedSeatList, setSelectedSeatList] = useState<string[]>([]); // Mảng chứa danh sách ghế đã chọn
+    const [selectedSeatList, setSelectedSeatList] = useState<string[]>([]); // Mảng chứa danh sách ghế đã chọn 
+
+    // Mảng chứa danh sách id ghế đã chọn 
+    const [listSeat, setListSeat] = useState<string[]>([]); 
     
     // Tổng tiền dựa trên ghế đã chọn
     const [totalPrice, setTotalPrice] = useState<number>(0); // Tổng tiền dựa trên giá ghế đã chọn
@@ -67,6 +72,8 @@ export const InfoProvider = ({ children }: any) => {
                 setIdTripPassenger, 
                 selectedSeatList,
                 setSelectedSeatList, 
+                listSeat,
+    setListSeat,
                 totalPrice, 
                 setTotalPrice
             }}
