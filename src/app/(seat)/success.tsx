@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { useCurrentApp } from "@/context/api.context";
 import { useInfo } from "@/context/info.context";
+import * as Notifications from "expo-notifications";
 import { postTicket } from "@/utils/api";
 
 const Success = () => {
@@ -55,6 +56,17 @@ const Success = () => {
         );
   
         console.log("Đặt vé thành công:", res.data);
+
+        // 🛎️ Gửi thông báo ngay sau khi đặt vé thành công
+await Notifications.scheduleNotificationAsync({
+  content: {
+    title: "🎫 Vé đã được đặt!",
+    body: "Chúc bạn có chuyến đi vui vẻ và an toàn!",
+    sound: "default",
+  },
+  trigger: null, // Gửi ngay lập tức
+});
+
       } catch (error) {
         console.error("Lỗi khi đặt vé:", error);
         Alert.alert("Lỗi", "Không thể đặt vé. Vui lòng thử lại sau.");

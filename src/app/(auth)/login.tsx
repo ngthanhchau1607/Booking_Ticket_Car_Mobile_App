@@ -37,8 +37,6 @@ const LoginPage = () => {
 
         try {
             const res = await loginApi(email, password);
-            console.log("API response:", res);  // Xem dữ liệu trả về từ API
-
             // Kiểm tra cấu trúc dữ liệu trả về
             if (res && res.data && res.data.token) {
                 await AsyncStorage.setItem("token", res.data.token);
@@ -46,7 +44,6 @@ const LoginPage = () => {
                 console.log("check phone", res.data.user);
                 router.replace("/(tabs)");
             } else {
-                console.log("Login failed. Response:", res); // Xem phản hồi khi đăng nhập thất bại
                 Toast.show("Đăng nhập thất bại. Vui lòng thử lại.", {
                     duration: Toast.durations.LONG,
                     textColor: "white",

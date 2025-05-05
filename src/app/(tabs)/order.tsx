@@ -2,8 +2,15 @@ import { useCurrentApp } from "@/context/api.context";
 import { getTicket } from "@/utils/api";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  FlatList,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import QRCode from "react-native-qrcode-svg";
 
 const OrderPage = () => {
   const insets = useSafeAreaInsets();
@@ -42,7 +49,6 @@ const OrderPage = () => {
 
     const vehicle = item.tripPassengerTicket?.vehicle;
 
-    // ✅ Lấy tên tỉnh thành thay vì tên điểm
     const pickupPoint = item.tripPassengerTicket?.trip?.from?.province || "Điểm đi";
     const dropoffPoint = item.tripPassengerTicket?.trip?.to?.province || "Điểm đến";
 
@@ -70,6 +76,26 @@ const OrderPage = () => {
           </View>
 
           <Text style={styles.busText}>{vehicle?.name || "Tên xe"}</Text>
+
+          {/* ✅ QR Code hiển thị ở đây */}
+          <View style={styles.qrBox}>
+          <QRCode
+  value={JSON.stringify({
+    ticketId: item.id,
+    userId: item.userId,
+    pickup: pickupPoint,
+    dropoff: dropoffPoint,
+    seats: Array.isArray(item.seatTickets)
+      ? item.seatTickets.map((seat: any) => seat.seat?.name)
+      : [],
+    total: item.totalAmount,
+    createdAt: item.createdAt,
+  })}
+  size={100}
+  backgroundColor="white"
+/>
+            <Text style={styles.qrText}>Mã QR vé</Text>
+          </View>
 
           <Pressable onPress={handleDetailsPress} style={styles.detailsButton}>
             <Text style={styles.detailsButtonText}>Chi tiết vé</Text>
@@ -230,6 +256,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
     marginTop: 4,
+  },
+  qrBox: {
+    marginTop: 12,
+    alignItems: "center",
+  },
+  qrText: {
+    marginTop: 6,
+    fontSize: 13,
+    color: "#666",
   },
   detailsButton: {
     marginTop: 12,

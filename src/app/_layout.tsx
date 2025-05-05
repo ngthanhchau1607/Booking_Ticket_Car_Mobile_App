@@ -8,6 +8,7 @@ import { TripProvider } from "@/context/trip.context";
 import { TripPassengerProvider } from "@/context/trippassenger.context";
 import { InfoProvider } from "@/context/info.context";
 import { RegisterProvider } from "@/context/register.context";
+import { NotificationProvider } from "@/context/notification";
 
 
 const RootLayout = () => {
@@ -20,6 +21,7 @@ const RootLayout = () => {
                 <TripProvider>
                 <TripPassengerProvider>
                 <InfoProvider>
+                <NotificationProvider>
                 <AppRoot />
                     <Stack>
                         <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -78,6 +80,7 @@ const RootLayout = () => {
 
 
                     </Stack>
+                    </NotificationProvider>
                     </InfoProvider>
                     </TripPassengerProvider>
                     </TripProvider>
